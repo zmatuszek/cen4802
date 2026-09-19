@@ -52,7 +52,7 @@ public class ToDo {
     }
 
     @Override
-    public String toString() {
+    public String toString() { // ☑ ☐ important characters
         String str = "";
         if(checkbox) str += "☑ | " + description;
         else str += "☐ | " + description;
