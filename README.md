@@ -18,3 +18,24 @@ Where to find results in GitHub:
 Local build
 - Requires Java 11+ and Maven
 - Run: mvn -B verify
+
+Containerization (Docker)
+- Build the image (from project root):
+  - docker build -t todo-tomcat:latest .
+- Run the container, mapping port 8080:
+  - docker run --rm -p 8080:8080 --name todo-tomcat todo-tomcat:latest
+- Open the app in your browser:
+  - http://localhost:8080/
+- Stop the container:
+  - Ctrl+C (if running in foreground) or docker stop todo-tomcat
+
+Using Docker Compose
+- Build and run:
+  - docker compose up --build
+- Tear down:
+  - docker compose down
+
+Notes
+- The Dockerfile uses a multi-stage build: Maven compiles the project and produces the WAR, which is copied into a Tomcat 9 (JDK 11) runtime image.
+- The application is deployed as ROOT.war, so it is served at the root context path (/).
+- Make sure Docker Desktop (Windows/macOS) or Docker Engine (Linux) is installed and running before executing the above commands.

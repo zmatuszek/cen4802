@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  todo-tomcat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: todo-tomcat:latest
+    container_name: todo-tomcat
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

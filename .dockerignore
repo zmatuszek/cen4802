@@ -1,0 +1,23 @@
+# Ignore build outputs and VCS
+.target
+/target
+**/target/
+
+# Git
+.git
+.gitignore
+.github/
+
+# IDEs and editors
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Maven caches (not needed in build context)
+.mvn/
+.m2/
