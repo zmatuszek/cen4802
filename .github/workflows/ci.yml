@@ -43,34 +43,19 @@ jobs:
           name: ToDoTomcat-war-java-${{ matrix.java }}
           path: target/ToDoTomcat.war
 
-      - name: Set up Docker Build
-        if: ${{ success() && matrix.java == '17' }}
-        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        if: ${{ matrix.java == '17' && success() && hashFiles('target/ToDoTomcat.war') != '' }}
+        run: docker build -t todo-tomcat:${{ github.sha }} .
 
-      - name: Build Docker image (no push)
-        if: ${{ success() && matrix.java == '17' }}
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./Dockerfile
-          push: false
-          load: true
-          platforms: linux/amd64
-          provenance: false
-          sbom: false
-          tags: |
-            todo-tomcat:ci
-            todo-tomcat:${{ github.sha }}
+      - name: Save Docker image to tar
+        if: ${{ matrix.java == '17' && success() }}
+        run: docker save todo-tomcat:${{ github.sha }} -o todo-tomcat-image-${{ github.sha }}.tar
 
-      - name: Export Docker image as TAR artifact
-        if: ${{ success() && matrix.java == '17' }}
-        run: |
-          docker image inspect todo-tomcat:ci >/dev/null 2>&1 || { echo "Image not found"; exit 1; }
-          docker image save --output todo-tomcat-image.tar todo-tomcat:ci
-
-      - name: Upload Docker image artifact (TAR)
-        if: ${{ success() && matrix.java == '17' }}
+      - name: Upload Docker image artifact
+        if: ${{ matrix.java == '17' && success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: todo-tomcat-image-tar-${{ github.sha }}
-          path: todo-tomcat-image.tar
+          name: todo-tomcat-image-${{ github.sha }}
+          path: todo-tomcat-image-${{ github.sha }}.tar
+          if-no-files-found: error
+
