@@ -2,7 +2,8 @@
 # The WAR should be built outside (e.g., by CI using Maven) before building this image.
 
 # Use Tomcat 9 with JDK 11 (compatible with Servlet 4.0 API used by the project)
-FROM tomcat:9.0-jdk11-temurin
+# Use Google's Docker Hub mirror to avoid Docker Hub outages/rate limits
+FROM mirror.gcr.io/library/tomcat:9.0-jdk11-temurin
 
 # Path to the prebuilt WAR within the build context
 ARG WAR_FILE=target/ToDoTomcat.war
