@@ -42,3 +42,19 @@ jobs:
         with:
           name: ToDoTomcat-war-java-${{ matrix.java }}
           path: target/ToDoTomcat.war
+
+      - name: Set up Docker Build
+        if: ${{ success() && matrix.java == '17' }}
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image (no push)
+        if: ${{ success() && matrix.java == '17' }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          tags: |
+            todo-tomcat:ci
+            todo-tomcat:${{ github.sha }}
