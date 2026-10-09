@@ -6,11 +6,11 @@ WORKDIR /app
 
 # Leverage Docker layer caching
 COPY pom.xml ./
-RUN --mount=type=cache,target=/root/.m2 mvn -B -q -e -DskipTests dependency:go-offline
+RUN --mount=type=cache,target=/root/.m2 mvn -B -q -e dependency:go-offline
 
 # Copy sources and build
 COPY src ./src
-RUN --mount=type=cache,target=/root/.m2 mvn -B -e -DskipTests package
+RUN --mount=type=cache,target=/root/.m2 mvn -B -e package
 
 # ---------- Runtime stage ----------
 # Use Tomcat 9 with JDK 11 (compatible with Servlet 4.0 API used by the project)
