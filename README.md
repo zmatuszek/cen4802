@@ -3,20 +3,24 @@
 [![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
 
 Simple Java Servlet (WAR) project with a Continuous Integration (CI) pipeline powered by GitHub Actions.
-The project is deployed to a Tomcat 9 container using Docker Compose.
-Image is compiled during the CI pipeline on push/pull request.
+- The project is deployed to a Tomcat 9 container using Docker Compose.
+- Image is compiled during the CI pipeline on push/pull request.
 
-Place .TAR file in an established Dockerfile directory
-From the Docker Terminal, navigate to the directory where the .TAR file is located
-Run the following command:
-docker load -i <name of .TAR file>
+Continuous Integration (CI) workflow:
+- Builds the project with Maven
+- Runs JUnit 5 tests
+- Uploads test reports as artifacts
+- Deploys the WAR to a Tomcat 9 container
+  - Place .TAR file in an established Dockerfile directory
+  - From the Docker Terminal, navigate to the directory where the .TAR file is located 
+  - Run the following command: docker load -i <name of .TAR file>.tar
 
-AI GENERATED CONTENT DISCLAIMER
-All functional aspects of the java project were written by Zach Matuszek
-This project's Unit Testing has been automatically generated using the IntelliJ Junie AI.
-This project's CI workflow has been automatically generated using the IntelliJ Junie AI.
-This project's Docker integration has been automatically generated using the IntelliJ Junie AI.
-Parts of this README have been automatically generated using the IntelliJ Junie AI
+AI GENERATED CONTENT DISCLAIMER:
+- All function files (.JSP, .JAVA) of the project were written by Zach Matuszek.
+- This project's Unit Testing has been automatically generated using the IntelliJ Junie AI.
+- This project's CI workflow has been automatically generated using the IntelliJ Junie AI.
+- This project's Docker integration has been automatically generated using the IntelliJ Junie AI.
+- Parts of this README have been automatically generated using the IntelliJ Junie AI
 
 What the CI workflow does:
 - Triggers on every push and pull request
