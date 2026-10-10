@@ -42,3 +42,20 @@ jobs:
         with:
           name: ToDoTomcat-war-java-${{ matrix.java }}
           path: target/ToDoTomcat.war
+
+      - name: Build Docker image
+        if: ${{ matrix.java == '17' && success() && hashFiles('target/ToDoTomcat.war') != '' }}
+        run: docker build -t todo-tomcat:${{ github.sha }} .
+
+      - name: Save Docker image to tar
+        if: ${{ matrix.java == '17' && success() }}
+        run: docker save todo-tomcat:${{ github.sha }} -o todo-tomcat-image-${{ github.sha }}.tar
+
+      - name: Upload Docker image artifact
+        if: ${{ matrix.java == '17' && success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: todo-tomcat-image-${{ github.sha }}
+          path: todo-tomcat-image-${{ github.sha }}.tar
+          if-no-files-found: error
+
