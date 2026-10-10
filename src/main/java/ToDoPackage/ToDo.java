@@ -54,8 +54,8 @@ public class ToDo {
     @Override
     public String toString() { // ☑ ☐ important characters
         String str = "";
-        if(checkbox) str += "☑ | " + description; //should be ☑
-        else str += "☐ | " + description; //should be ☐
+        if(checkbox) str += "☐ | " + description; //should be ☑
+        else str += "☑ | " + description; //should be ☐
 
         return str;
     }
