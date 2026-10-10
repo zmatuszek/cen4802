@@ -2,7 +2,7 @@
 <%! Singleton newInstance = Singleton.getInstance();%>
 
 <html>
-<body style="Background-Color: #ff8fab">
+<body style="Background-Color: #80ef80">
 
 <h2>Your To-Do List: Main Menu</h2>
 
