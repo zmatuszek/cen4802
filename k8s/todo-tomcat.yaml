@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: todo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-tomcat
+  namespace: todo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-tomcat
+  template:
+    metadata:
+      labels:
+        app: todo-tomcat
+    spec:
+      containers:
+        - name: todo-tomcat
+          image: todo-tomcat:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-tomcat
+  namespace: todo
+spec:
+  type: ClusterIP
+  selector:
+    app: todo-tomcat
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+# Optional: Ingress (requires an ingress controller, e.g., ingress-nginx)
+# Uncomment after installing ingress-nginx in Docker Desktop
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: todo-tomcat
+#   namespace: todo
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+# spec:
+#   rules:
+#     - host: todo.localtest.me
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: todo-tomcat
+#                 port:
+#                   number: 80
