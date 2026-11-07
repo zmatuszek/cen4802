@@ -1,5 +1,6 @@
 <%@ page import="ToDoPackage.Singleton" %>
 <%@ page import="ToDoPackage.ToDo" %>
+<%@ page import="ToDoPackage.ProfanityService" %>
 <%! Singleton newInstance = Singleton.getInstance();%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -12,7 +13,8 @@
 <%
     if(request.getParameter("action").equals("add")){
         String description = request.getParameter("taskDescription");
-        newInstance.addTask(new ToDo(description, false));
+        String filtered = ProfanityService.filter(description);
+        newInstance.addTask(new ToDo(filtered, false));
 
     } else if (request.getParameter("action").equals("remove")){
         String removeIndex = request.getParameter("removeIndex");
